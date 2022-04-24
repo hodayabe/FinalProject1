@@ -1,4 +1,4 @@
-package finalProject2.account;
+package account;
 
 public enum AccountProperties {
 	BRONZE,//(4.5,6,5,7.5,10000,2500),

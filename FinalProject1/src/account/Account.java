@@ -1,4 +1,5 @@
-package finalProject2.account;
+package account;
+
 
 public class Account {
 	

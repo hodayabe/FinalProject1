@@ -1,4 +1,4 @@
-package finalProject2.account;
+package account;
 
 public enum ActivityName {
 	
