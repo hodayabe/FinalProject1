@@ -43,4 +43,15 @@ public class Credentials {
 		else
 			this.password = password;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Credentials [username=" + username + ", password=" + password + "]";
+	}
+	
+	
+	
+	
 }
+

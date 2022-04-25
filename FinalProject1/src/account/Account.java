@@ -1,5 +1,6 @@
 package account;
 
+import java.time.LocalDate;
 
 public class Account {
 	static int cnt = 0;
@@ -26,51 +27,82 @@ public class Account {
 		this.fee = fee;
 	}
 
-	private double getBalance() {
+
+	public static int getCnt() {
+		return cnt;
+	}
+
+
+	public static void setCnt(int cnt) {
+		Account.cnt = cnt;
+	}
+
+
+	public double getBalance() {
 		return balance;
 	}
 
-	private void setBalance(double balance) {
+
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 
-	private AccountProperties getAccountProperties() {
+
+	public AccountProperties getAccountProperties() {
 		return accountProperties;
 	}
 
-	private void setAccountProperties(AccountProperties accountProperties) {
+
+	public void setAccountProperties(AccountProperties accountProperties) {
 		this.accountProperties = accountProperties;
 	}
 
-	private ActivityData[] getActivityData() {
+
+	public ActivityData[] getActivityData() {
 		return activityData;
 	}
 
-	private void setActivityData(ActivityData[] activityData) {
+
+	public void setActivityData(ActivityData[] activityData) {
 		this.activityData = activityData;
 	}
 
-	private double getIntresRate() {
+
+	public double getIntresRate() {
 		return intresRate;
 	}
 
-	private void setIntresRate(double intresRate) {
+
+	public void setIntresRate(double intresRate) {
 		this.intresRate = intresRate;
 	}
 
-	private double getFee() {
+
+	public double getFee() {
 		return fee;
 	}
 
-	private void setFee(double fee) {
+
+	public void setFee(double fee) {
 		this.fee = fee;
 	}
 
-	private long getAccountNumber() {
+
+	public long getAccountNumber() {
 		return accountNumber;
 	}
-	
-	
+
+	public double withdrawalToday() {
+		double sum=0;
+		boolean flagDate,flagName;
+		for (int i = 0; i < this.getActivityData().length; i++) {
+			flagDate=this.getActivityData()[i].getTimeStamp().toLocalDate()== LocalDate.now();
+			flagName=this.getActivityData()[i].getActivityName().equals("WITHDRAWAL") ;
+			if(flagDate&&flagName)
+				sum+=this.getActivityData()[i].getBalanceChange();
+		}
+		return sum;
+	}
 
 }
 

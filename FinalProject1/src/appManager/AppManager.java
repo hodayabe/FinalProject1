@@ -116,8 +116,11 @@ public class AppManager {
 	}
 
 
-	public AccountOwner getOwnerByPhoneNum(long PhoneNum) {
-
+	public static AccountOwner getOwnerByPhoneNum(long PhoneNum) {
+		for (int i = 0; i < users.length; i++) {
+			if(users[i].getPhoneNumber()== PhoneNum)
+			return users[i];
+		}
 		return null;
 	}
 
@@ -132,6 +135,7 @@ public class AppManager {
 				+ "Enter a new password:  {4-8 chars, must contain digit and letter}:\r\n"
 				+"monthly Income\r\n");
 		long phoneNum=scan.nextLong();
+		//scan.nextLine();
 		String firstName = scan.nextLine();
 		scan.nextLine();
 		String lastName = scan.nextLine();
@@ -170,8 +174,10 @@ public class AppManager {
 		}
 	}
 	
-	
+	//***********************************
 
+	
+	
 }
 
 
