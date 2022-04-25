@@ -24,7 +24,7 @@ public class Credentials {
 		return true;
 	}
 	
-	
+	//TODO
 	public void setUsername(String username) {
 		if(!isDigitOrLetter(username))
 				System.out.println("Unacceptable password");

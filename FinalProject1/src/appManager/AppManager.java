@@ -1,14 +1,16 @@
 package appManager;
 
+import java.util.Scanner;
+
 import Person.AccountOwner;
-import Person.Credentials;
 
 public class AppManager {
 
+	static Scanner scan = new Scanner(System.in);
 	//fields
 	private AccountOwner currUser;
 	private AccountOwner[] users;
-	
+
 
 
 	//Constructors
@@ -43,16 +45,39 @@ public class AppManager {
 
 	//methods
 
-	public void login(String username, String password){
-		for (int i = 0; i < users.length; i++) {
-			boolean flagUsername=users[i].getCredentials().getUsername().equals(username);
-			boolean flagPassword=users[i].getCredentials().getPassword().equals(password);
-			if(flagUsername && flagPassword)
-				setCurrUser(users[i]);
-		}
+	public void login(){
+		boolean flagUsername=false,flagPassword;
+		int i=0,cnt=0;
+
+		//Verifies username
+		do {
+			System.out.println("Enter a username");
+			String username = scan.nextLine();
+			for (; i < users.length; i++) {
+				flagUsername=users[i].getCredentials().getUsername().equals(username);
+				if(flagUsername)
+					break;
+			}
+		}while(flagUsername);
+
+		
+		//Verifies password
+		do {
+			System.out.println("Enter a password");
+			String password = scan.nextLine();
+			flagPassword=users[i].getCredentials().getPassword().equals(password);
+			cnt++;
+		}while(cnt<3);
+
+
+		if(flagPassword)
+			setCurrUser(currUser);
+		else
+			System.out.println("the account");
+
 	}
 
-	
+
 	public void login(long phoneNumber) {
 
 	}
@@ -62,12 +87,20 @@ public class AppManager {
 	}
 
 	public void logout() {
-
+		this.currUser=null;
 	}
 
 	public AccountOwner getOwnerByPhoneNum(long PhoneNum) {
 
 		return null;
+	}
+
+
+
+	private void fillsApplicationForm() {
+		System.out.println("Enter a Phone number");
+		currUser.setPhoneNumber(0);
+
 	}
 
 
