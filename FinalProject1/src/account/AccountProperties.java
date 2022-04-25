@@ -7,6 +7,4 @@ public enum AccountProperties {
 	TITANIUM,//(0,0,0,0,0,0);
 	
 	
-	
-	
 }

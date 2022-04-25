@@ -2,23 +2,26 @@ package Person;
 
 import java.time.LocalDate;
 
-import finalProject2.account.Account;
+import account.Account;
+
 
 public class AccountOwner extends Person{
 	//fields
 	private Account account=null;
 	private double monthlyIncome;
 	private Credentials credentials;
+	private BankManager manager;
 
 
 
 	//constructors
 
-	public AccountOwner(Account account, double monthlyIncome, Credentials credentials) {
-		super();
+	public AccountOwner(String firstName,String lastName,long phoneNumber,LocalDate bitrthDate,Account account, double monthlyIncome, Credentials credentials,BankManager manager) {
+		super(firstName,lastName,phoneNumber,bitrthDate);
 		setAccount(account);
 		setMonthlyIncome(monthlyIncome);
 		setCredentials(credentials);
+		setManager(manager);
 	}
 
 
@@ -49,7 +52,17 @@ public class AccountOwner extends Person{
 	public void setCredentials(Credentials credentials) {
 		this.credentials = credentials;
 	}
+	
+	public BankManager getManager() {
+		return manager;
+	}
 
+	public void setManager(BankManager manager) {
+		this.manager = manager;
+	}
+
+	
+	
 	//methods
 	public void checkBalance() {
 
@@ -68,6 +81,10 @@ public class AccountOwner extends Person{
 	public void transferFunds() {
 
 	}
+
+
+
+
 
 
 

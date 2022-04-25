@@ -38,7 +38,7 @@ public class Credentials {
 	}
 	
 	public void setPassword(String password) {
-		if(!isDigitOrLetter(username) && password.length()>4 )
+		if(!isDigitOrLetter(username) && password.length()>4 && password.length()<8)
 			System.out.println("Unacceptable password");
 		else
 			this.password = password;

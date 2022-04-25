@@ -1,8 +1,13 @@
 package appManager;
 
+import java.time.LocalDate;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Person.AccountOwner;
+import Person.Credentials;
+import account.Account;
 
 public class AppManager {
 
@@ -46,8 +51,10 @@ public class AppManager {
 	//methods
 
 	public void login(){
+
+		//TODO timer
 		boolean flagUsername=false,flagPassword;
-		int i=0,cnt=0;
+		int i=0,trys=0;
 
 		//Verifies username
 		do {
@@ -60,35 +67,48 @@ public class AppManager {
 			}
 		}while(flagUsername);
 
-		
+
 		//Verifies password
 		do {
 			System.out.println("Enter a password");
 			String password = scan.nextLine();
 			flagPassword=users[i].getCredentials().getPassword().equals(password);
-			cnt++;
-		}while(cnt<3);
+			trys++;
+		}while(trys<3);
 
 
 		if(flagPassword)
 			setCurrUser(currUser);
-		else
-			System.out.println("the account");
+		else {
+			System.out.println("sory....the account is locked for 30 minutes");
 
+		}
 	}
 
 
 	public void login(long phoneNumber) {
-
+		for (int i = 0; i < users.length; i++) {
+			if(users[i].getPhoneNumber()== phoneNumber) {
+				setCurrUser(currUser);
+				return;
+			}
+		}
+		System.out.println("The phone number is not in the system");
 	}
+
+
 
 	public void OpenAccount() {
 
+
 	}
+
+
 
 	public void logout() {
 		this.currUser=null;
 	}
+
 
 	public AccountOwner getOwnerByPhoneNum(long PhoneNum) {
 
@@ -98,13 +118,36 @@ public class AppManager {
 
 
 	private void fillsApplicationForm() {
-		System.out.println("Enter a Phone number");
-		currUser.setPhoneNumber(0);
-
+		System.out.println("Enter a Phone Number:\r\n"
+				+ "first name:\r\n"
+				+ "last name:\r\n"
+				+ "bitrthDate:{yyyy,dd,mm,}"
+				+ "monthly Income"
+				+ "Enter a new user name: {letters and digits only}"
+				+ "Enter a new password:  {4-8 chars, must contain digit and letter}"
+				+"monthly Income");
+		long phoneNum=scan.nextLong();
+		String firstName = scan.nextLine();
+		String lastName = scan.nextLine();
+		LocalDate birthDate=ReceivesDateFromUser();
+		String username = scan.nextLine();
+		String password = scan.nextLine();
+		int monthlyIncome = scan.nextInt();
+		
+		///*************ask if the owner need to create the bank manager
+		 Credentials credentials = new Credentials(username,password);
+		 AccountOwner newOwner = new AccountOwner(firstName,lastName,phoneNum,birthDate,null,monthlyIncome,credentials,null);
+		 newOwner.getManager().addUserToApprove(newOwner);
 	}
 
-
-
-
+	
+	private LocalDate ReceivesDateFromUser() {
+		LocalDate ld = LocalDate.of(scan.nextInt(), scan.nextInt(), scan.nextInt());
+		return ld;
+	}
+	
 
 }
+
+
+
