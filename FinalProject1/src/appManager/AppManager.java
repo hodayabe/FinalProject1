@@ -4,28 +4,23 @@ import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import Person.AccountOwner;
+import Person.BankManager;
 import Person.Credentials;
 import account.Account;
+import account.AccountProperties;
+import account.ActivityData;
 
 public class AppManager {
 
 	static Scanner scan = new Scanner(System.in);
 	//fields
+	private  BankManager Administrator;
 	private AccountOwner currUser;
-	private AccountOwner[] users;
-
-
-
-	//Constructors
-	public AppManager(AccountOwner currUser, AccountOwner[] users) {
-
-		setCurrUser(currUser);
-		setUsers(users);
-	}
-
-
+	private AccountOwner[] users= new AccountOwner[100];
+	static int indexForApp=0;
+	private boolean flag =false;
+	
 
 	//getters and setters
 	public AccountOwner getCurrUser() {
@@ -45,6 +40,16 @@ public class AppManager {
 		for (int i = 0; i < users.length; i++) {
 			this.users[i]=users[i];
 		}
+	}
+	
+	public  BankManager getAdministrator() {
+		return Administrator;
+	}
+
+
+
+	public void setAdministrator(BankManager administrator) {
+		Administrator = administrator;
 	}
 
 
@@ -99,7 +104,8 @@ public class AppManager {
 
 
 	public void OpenAccount() {
-
+		//TODO check if the user is exist;
+		fillsApplicationForm();
 
 	}
 
@@ -121,23 +127,33 @@ public class AppManager {
 		System.out.println("Enter a Phone Number:\r\n"
 				+ "first name:\r\n"
 				+ "last name:\r\n"
-				+ "bitrthDate:{yyyy,dd,mm,}"
-				+ "monthly Income"
-				+ "Enter a new user name: {letters and digits only}"
-				+ "Enter a new password:  {4-8 chars, must contain digit and letter}"
-				+"monthly Income");
+				+ "bitrthDate:{yyyy,dd,mm,}:\r\n"
+				+ "Enter a new user name: {letters and digits only}:\r\n"
+				+ "Enter a new password:  {4-8 chars, must contain digit and letter}:\r\n"
+				+"monthly Income\r\n");
 		long phoneNum=scan.nextLong();
 		String firstName = scan.nextLine();
+		scan.nextLine();
 		String lastName = scan.nextLine();
 		LocalDate birthDate=ReceivesDateFromUser();
 		String username = scan.nextLine();
+		scan.nextLine();
 		String password = scan.nextLine();
 		int monthlyIncome = scan.nextInt();
 		
-		///*************ask if the owner need to create the bank manager
-		 Credentials credentials = new Credentials(username,password);
-		 AccountOwner newOwner = new AccountOwner(firstName,lastName,phoneNum,birthDate,null,monthlyIncome,credentials,null);
+		
+		Credentials credentials = new Credentials(username,password);
+		
+		if(!flag) {
+			Account account = new Account(9000);
+			this.Administrator = new BankManager(firstName,lastName,phoneNum,birthDate,account,monthlyIncome,credentials);
+			addUsers(Administrator);
+		}
+		 
+		 AccountOwner newOwner = new AccountOwner(firstName,lastName,phoneNum,birthDate,null,monthlyIncome,credentials,Administrator,false);
 		 newOwner.getManager().addUserToApprove(newOwner);
+		 newOwner.getManager().setAndApproveAcc();
+		 addUsers(newOwner);
 	}
 
 	
@@ -145,6 +161,15 @@ public class AppManager {
 		LocalDate ld = LocalDate.of(scan.nextInt(), scan.nextInt(), scan.nextInt());
 		return ld;
 	}
+
+
+	public void addUsers(AccountOwner owner) {
+		if(indexForApp<100) {
+			users[indexForApp]=owner;
+			indexForApp++;
+		}
+	}
+	
 	
 
 }

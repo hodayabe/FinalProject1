@@ -1,17 +1,16 @@
 package runner;
 
+import appManager.AppManager;
+
 public class Runner {
 
 	public static void main(String[] args) {
+		AppManager app =new AppManager();
 		
-		String s="gfhg3";
-		for (int i = 0; i < s.length(); i++) {
-			if(Character.isDigit(s.charAt(i)))
-				System.out.println(s.charAt(i));
-	}
+		app.OpenAccount();
+		
 
 }	
-	
 	
 	
 }

@@ -3,6 +3,7 @@ package Person;
 import java.time.LocalDate;
 
 import account.Account;
+import appManager.AppManager;
 
 
 public class AccountOwner extends Person{
@@ -11,17 +12,23 @@ public class AccountOwner extends Person{
 	private double monthlyIncome;
 	private Credentials credentials;
 	private BankManager manager;
+	private boolean isManager;
 
 
 
 	//constructors
 
-	public AccountOwner(String firstName,String lastName,long phoneNumber,LocalDate bitrthDate,Account account, double monthlyIncome, Credentials credentials,BankManager manager) {
+	public AccountOwner(String firstName,String lastName,long phoneNumber,LocalDate bitrthDate,Account account, 
+			double monthlyIncome, Credentials credentials, BankManager manager,boolean isManager) {
+		
 		super(firstName,lastName,phoneNumber,bitrthDate);
 		setAccount(account);
 		setMonthlyIncome(monthlyIncome);
 		setCredentials(credentials);
-		setManager(manager);
+		if(!isManager)
+			setManager(manager);
+		else
+			setManager(null);
 	}
 
 
@@ -80,6 +87,14 @@ public class AccountOwner extends Person{
 
 	public void transferFunds() {
 
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "AccountOwner [account=" + account + ", monthlyIncome=" + monthlyIncome + ", credentials=" + credentials
+				+ ", manager=" + manager + ", isManager=" + isManager + "]"+super.toString();
 	}
 
 
