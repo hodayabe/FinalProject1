@@ -109,6 +109,7 @@ public class AppManager {
 
 
 	public  void OpenAccount() {
+		//in the first time the function create a manager
 		if(!flag) {
 			Account account = new Account(9000);
 			Credentials credentials = new Credentials("jon1","jon123");
@@ -118,7 +119,6 @@ public class AppManager {
 			return;
 		}
 		fillsApplicationForm();
-
 	}
 
 

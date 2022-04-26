@@ -39,7 +39,6 @@ public class AccountOwner extends Person{
 		return account;
 	}
 
-
 	public void setAccount(Account account) {
 		this.account = account;
 	}

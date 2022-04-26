@@ -3,6 +3,7 @@ package account;
 import java.time.LocalDate;
 
 public class Account {
+	//fields
 	static int cnt = 0;
 	private final long accountNumber;
 	private double balance;
@@ -28,70 +29,62 @@ public class Account {
 	}
 
 
+	//getters and setters
 	public static int getCnt() {
 		return cnt;
 	}
-
 
 	public static void setCnt(int cnt) {
 		Account.cnt = cnt;
 	}
 
-
 	public double getBalance() {
 		return balance;
 	}
-
 
 	public void setBalance(double balance) {
 		this.balance +=balance;
 	}
 
-
 	public AccountProperties getAccountProperties() {
 		return accountProperties;
 	}
-
 
 	public void setAccountProperties(AccountProperties accountProperties) {
 		this.accountProperties = accountProperties;
 	}
 
-
 	public ActivityData[] getActivityData() {
 		return activityData;
 	}
-
 
 	public void setActivityData(ActivityData[] activityData) {
 		this.activityData = activityData;
 	}
 
-
 	public double getIntresRate() {
 		return intresRate;
 	}
-
 
 	public void setIntresRate(double intresRate) {
 		this.intresRate = intresRate;
 	}
 
-
 	public double getFee() {
 		return fee;
 	}
-
 
 	public void setFee(double fee) {
 		this.fee = fee;
 	}
 
-
 	public long getAccountNumber() {
 		return accountNumber;
 	}
 
+	
+	//methods
+	//check how many withdrawal Today
 	public double withdrawalToday() {
 		double sum=0;
 		boolean flagDate,flagName;
