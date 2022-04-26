@@ -4,11 +4,21 @@ import java.time.LocalDateTime;
 
 public class ActivityData {
 	private ActivityName activityName;
-	private Double balanceChange ;//{+deposit, -withdra}
+	private Double balanceChange ;//{+deposit, -withdraw}
 	private LocalDateTime timeStamp;
 	private String info;
 	
 
+	
+	public ActivityData(ActivityName activityName, Double balanceChange, LocalDateTime timeStamp, String info) {
+		this.activityName = activityName;
+		this.balanceChange = balanceChange;
+		this.timeStamp = timeStamp;
+		this.info = info;
+	}
+	
+	
+	
 	
 	public ActivityName getActivityName() {
 		return activityName;

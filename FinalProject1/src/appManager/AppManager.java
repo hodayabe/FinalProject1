@@ -15,12 +15,12 @@ public class AppManager {
 
 	static Scanner scan = new Scanner(System.in);
 	//fields
-	private  BankManager Administrator;
+	private BankManager Administrator;
 	private AccountOwner currUser;
-	private AccountOwner[] users= new AccountOwner[100];
+	public static AccountOwner[] users= new AccountOwner[100];
 	static int indexForApp=0;
 	private boolean flag =false;
-	
+
 
 	//getters and setters
 	public AccountOwner getCurrUser() {
@@ -36,12 +36,13 @@ public class AppManager {
 		return users;
 	}
 
+	
 	public void setUsers(AccountOwner[] users) {
 		for (int i = 0; i < users.length; i++) {
 			this.users[i]=users[i];
 		}
 	}
-	
+
 	public  BankManager getAdministrator() {
 		return Administrator;
 	}
@@ -59,35 +60,44 @@ public class AppManager {
 
 		//TODO timer
 		boolean flagUsername=false,flagPassword;
-		int i=0,trys=0;
+		int j=0,trys=0;
 
 		//Verifies username
 		do {
 			System.out.println("Enter a username");
 			String username = scan.nextLine();
-			for (; i < users.length; i++) {
+			
+			for (int i=0; i < indexForApp; i++) {
 				flagUsername=users[i].getCredentials().getUsername().equals(username);
-				if(flagUsername)
+				if(flagUsername) {
+					j=i;
 					break;
+				}	
 			}
 		}while(flagUsername);
+		
 
 
 		//Verifies password
 		do {
 			System.out.println("Enter a password");
 			String password = scan.nextLine();
-			flagPassword=users[i].getCredentials().getPassword().equals(password);
+			flagPassword=users[j].getCredentials().getPassword().equals(password);
 			trys++;
-		}while(trys<3);
+		}while(trys<3 && !flagPassword);
 
 
-		if(flagPassword)
-			setCurrUser(currUser);
+		if(flagPassword) {
+			setCurrUser(users[j]);
+			if(currUser.equals(Administrator)) {
+				Administrator.setAndApproveAcc();
+			}
+			System.out.println("Successful login");
+		}
 		else {
 			System.out.println("sory....the account is locked for 30 minutes");
-
 		}
+		
 	}
 
 
@@ -103,7 +113,7 @@ public class AppManager {
 
 
 
-	public void OpenAccount() {
+	public  void OpenAccount() {
 		//TODO check if the user is exist;
 		fillsApplicationForm();
 
@@ -116,14 +126,13 @@ public class AppManager {
 	}
 
 
-	public static AccountOwner getOwnerByPhoneNum(long PhoneNum) {
+	public static  AccountOwner getOwnerByPhoneNum(long PhoneNum) {
 		for (int i = 0; i < users.length; i++) {
 			if(users[i].getPhoneNumber()== PhoneNum)
-			return users[i];
+				return users[i];
 		}
 		return null;
 	}
-
 
 
 	private void fillsApplicationForm() {
@@ -135,34 +144,40 @@ public class AppManager {
 				+ "Enter a new password:  {4-8 chars, must contain digit and letter}:\r\n"
 				+"monthly Income\r\n");
 		long phoneNum=scan.nextLong();
-		//scan.nextLine();
+		scan.next();
 		String firstName = scan.nextLine();
-		scan.nextLine();
 		String lastName = scan.nextLine();
-		LocalDate birthDate=ReceivesDateFromUser();
 		String username = scan.nextLine();
-		scan.nextLine();
 		String password = scan.nextLine();
+		Integer.parseInt(scan.nextLine());
 		int monthlyIncome = scan.nextInt();
-		
-		
+
 		Credentials credentials = new Credentials(username,password);
-		
+
 		if(!flag) {
 			Account account = new Account(9000);
-			this.Administrator = new BankManager(firstName,lastName,phoneNum,birthDate,account,monthlyIncome,credentials);
+			//this.Administrator = new BankManager(firstName,lastName,phoneNum,birthDate,account,monthlyIncome,credentials);
+			this.Administrator = new BankManager(firstName,lastName,phoneNum, LocalDate.of(2020, 1, 8),account,monthlyIncome,credentials);
 			addUsers(Administrator);
+			flag=true;
 		}
-		 
-		 AccountOwner newOwner = new AccountOwner(firstName,lastName,phoneNum,birthDate,null,monthlyIncome,credentials,Administrator,false);
-		 newOwner.getManager().addUserToApprove(newOwner);
-		 newOwner.getManager().setAndApproveAcc();
-		 addUsers(newOwner);
+		else {
+			AccountOwner newOwner = new AccountOwner(firstName,lastName,phoneNum, LocalDate.of(2020, 1, 8),null,monthlyIncome,credentials,Administrator);
+			newOwner.getManager().addUserToApprove(newOwner);
+//			newOwner.getManager().setAndApproveAcc();
+			addUsers(newOwner);
+		}
+		System.out.println("Successful OpenAccount");
 	}
 
-	
+
+
+
 	private LocalDate ReceivesDateFromUser() {
-		LocalDate ld = LocalDate.of(scan.nextInt(), scan.nextInt(), scan.nextInt());
+		int year=scan.nextInt();
+		int month=scan.nextInt();
+		int day=scan.nextInt();
+		LocalDate ld = LocalDate.of(year,month,day);
 		return ld;
 	}
 
@@ -173,11 +188,79 @@ public class AppManager {
 			indexForApp++;
 		}
 	}
-	
-	//***********************************
 
-	
-	
+	public int runner() {
+
+		Scanner sc = new Scanner(System.in);
+		while(true) {
+			showMenu();
+			int opt = Integer.parseInt(sc.next());
+			if(opt == 0)
+				break;
+			callAppManager(opt);
+		}
+		return 0;
+
+	}
+
+	public void showMenue() {
+		System.out.println("Please select a action you want to perform:");
+		System.out.println("1. Open Account\n" + "2. Login Use\n" + "3. Check Balance\n" + "4. Produce Activity Report\n"
+				+ "5. Make a deposit\n" + "6. Withdrawal\n" + "7. Transfer funds\n" + "8. Pay bill\n" + "9. Get Loan");
+	}
+
+
+	public void callAppManager(int opt) {
+		switch(opt){
+		case 0: 
+			System.out.println("by by");
+		case 1:
+			OpenAccount();
+			System.out.println(Administrator);
+			break;
+		case 2: 
+			login();
+			System.out.println(Administrator);
+		case 3: 
+			  this.currUser.checkBalance();
+			  break;
+		  case 4: 
+			  //System.out.println("Enter a LocalDate");
+//			  LocalDate date =LocalDateof(2021,12,12);
+			  this.currUser.produceReport( LocalDate.of(2020, 1, 8));
+			  break;
+		  case 5: 
+			  this.currUser.deposit();
+			  break;
+		  case 6: 
+			  this.currUser.withdrawal();
+			  break;
+		  case 7: 
+			  this.currUser.transferFunds();
+			  break;
+		  case 8: 
+			  this.currUser.payBill();
+			  break;
+		  case 9: 
+			  this.currUser.getLoan();
+			  break;
+		}
+	}
+
+
+
+
+
+	public void showMenu() {
+		System.out.println("Please select a action you want to perform:");
+		System.out.println("1. Open Account\n" + "2. Login Use\n" + "3. Check Balance\n" + "4. Produce Activity Report\n"
+				+ "5. Make a deposit\n" + "6. Withdrawal\n" + "7. Transfer funds\n" + "8. Pay bill\n" + "9. Get Loan");
+	}
+
+
+
+
+
 }
 
 

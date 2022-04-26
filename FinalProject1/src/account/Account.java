@@ -7,22 +7,22 @@ public class Account {
 	private final long accountNumber;
 	private double balance;
 	private AccountProperties accountProperties;
-	private ActivityData[] activityData;
+	private ActivityData[] activityData=new ActivityData[100];
+	private int index=0;
 	private double intresRate;
 	private double fee;
 	
 	
 	public Account(double balance) {
 		this.accountNumber = cnt++;
-		setBalance(balance);
+		this.balance=balance;
 	}
 
 
-	public Account(double balance, AccountProperties accountProperties,ActivityData[] activityData, double intresRate, double fee) {
+	public Account(double balance, AccountProperties accountProperties, double intresRate, double fee) {
 		this.accountNumber = cnt++;
 		this.balance = balance;
 		this.accountProperties = accountProperties;
-		this.activityData = activityData;
 		this.intresRate = intresRate;
 		this.fee = fee;
 	}
@@ -44,7 +44,7 @@ public class Account {
 
 
 	public void setBalance(double balance) {
-		this.balance = balance;
+		this.balance +=balance;
 	}
 
 
@@ -95,7 +95,7 @@ public class Account {
 	public double withdrawalToday() {
 		double sum=0;
 		boolean flagDate,flagName;
-		for (int i = 0; i < this.getActivityData().length; i++) {
+		for (int i = 0; i < index; i++) {
 			flagDate=this.getActivityData()[i].getTimeStamp().toLocalDate()== LocalDate.now();
 			flagName=this.getActivityData()[i].getActivityName().equals("WITHDRAWAL") ;
 			if(flagDate&&flagName)
@@ -104,6 +104,13 @@ public class Account {
 		return sum;
 	}
 
+	
+	public void addActivityToActivityData(ActivityData activity) {
+		activityData[index]=activity;
+		index++;
+	}
+	
+	
 }
 
 

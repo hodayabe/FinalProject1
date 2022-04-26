@@ -1,5 +1,7 @@
 package account;
 
+import java.time.LocalDate;
+
 public enum AccountProperties {
 	BRONZE(4.5,6,5,7.5,10000,2500),
 	SILVER(3,4.5,3.8,5,20000, 4000),
@@ -30,7 +32,7 @@ public enum AccountProperties {
 			return BRONZE;
 		if(monthlyIncom<3500)
 			return SILVER;
-		if(monthlyIncom<5000)
+		if(monthlyIncom<10000)
 			return GOLD;
 		else
 			return TITANIUM;
@@ -98,7 +100,13 @@ public enum AccountProperties {
 
 
 
-	
+	public void produceReport(LocalDate start) {
+//		for (int i = 0; i < this.getAccount().getActivityData().length; i++) {
+//			if(this.getAccount().getActivityData()[i].getTimeStamp().toLocalDate().isAfter(start))
+//				System.out.println(this.getAccount().getActivityData()[i]);
+//		}
+	}
+
 	
 	
 	
