@@ -27,7 +27,6 @@ public class AppManager {
 		return currUser;
 	}
 
-
 	public void setCurrUser(AccountOwner currUser) {
 		this.currUser = currUser;
 	}
@@ -36,19 +35,15 @@ public class AppManager {
 		return users;
 	}
 
-	
 	public void setUsers(AccountOwner[] users) {
 		for (int i = 0; i < users.length; i++) {
 			this.users[i]=users[i];
 		}
 	}
 
-
 	public  BankManager getAdministrator() {
 		return Administrator;
 	}
-
-
 
 	public void setAdministrator(BankManager administrator) {
 		Administrator = administrator;
@@ -67,11 +62,8 @@ public class AppManager {
 		do {
 			System.out.println("Enter a username");
 			String username = scan.nextLine();
-			
+
 			for (int i=0; users[i]!=null; i++) {
-				System.out.println("**********");
-				System.out.println(users[i]);
-				System.out.println("**********");
 				flagUsername=users[i].getCredentials().getUsername().equals(username);
 				if(flagUsername) {
 					j=i;
@@ -79,7 +71,7 @@ public class AppManager {
 				}	
 			}
 		}while(!flagUsername);
-		
+
 
 
 		//Verifies password
@@ -101,7 +93,7 @@ public class AppManager {
 		else {
 			System.out.println("sory....the account is locked for 30 minutes");
 		}
-		
+
 	}
 
 
@@ -144,51 +136,49 @@ public class AppManager {
 		return null;
 	}
 
-
+	
 	private void fillsApplicationForm() {
-		System.out.println("Enter a Phone Number:\r\n"
-				+ "first name:\r\n"
-				+ "last name:\r\n"
-				+ "bitrthDate:{yyyy,dd,mm,}:\r\n"
-				+ "Enter a new user name: {letters and digits only}:\r\n"
-				+ "Enter a new password:  {4-8 chars, must contain digit and letter}:\r\n"
-				+"monthly Income\r\n");
+		String firstName,lastName,username,password;
+
+		System.out.println("Phone Number:\r\n");
 		long phoneNum=scan.nextLong();
 		scan.next();
-		String firstName = scan.nextLine();
-		String lastName = scan.nextLine();
-		String username = scan.nextLine();
-		String password = scan.nextLine();
+		
+		do {
+			System.out.println("first name: \r\n");
+			firstName = scan.nextLine();
+		}while(!isALLLetter(firstName));
+		
+		do {
+			System.out.println("last name: \r\n");
+			lastName= scan.nextLine();
+		}while(!isALLLetter(lastName));
+		
+		
+		do {
+			System.out.println("username: {letters and digits only}:\r\n");
+			username = scan.nextLine();
+		}while(!isDigitAndLetter(username));
+		
+		
+		do {
+			System.out.println("password:  {4-8 chars, must contain digit and letter}:\r\n");
+			password = scan.nextLine();
+		}while(!isDigitAndLetter(password) || !isGoodLength(password));
+		
+		
+		System.out.println("monthly Income:\r\n");
 		int monthlyIncome=Integer.parseInt(scan.nextLine());
+		
 		Credentials credentials = new Credentials(username,password);
-
-//		if(!flag) {
-//			Account account = new Account(9000);
-//			//this.Administrator = new BankManager(firstName,lastName,phoneNum,birthDate,account,monthlyIncome,credentials);
-//			this.Administrator = new BankManager(firstName,lastName,phoneNum, LocalDate.of(2020, 1, 8),account,monthlyIncome,credentials);
-//			addUsers(Administrator);
-//			flag=true;
-//		}
-//		else {
-			AccountOwner newOwner = new AccountOwner(firstName,lastName,phoneNum, LocalDate.of(2020, 1, 8),
-					null,monthlyIncome,credentials,Administrator);
-			newOwner.getManager().addUserToApprove(newOwner);
-			addUsers(newOwner);
-//		}
+		AccountOwner newOwner = new AccountOwner(firstName,lastName,phoneNum, LocalDate.of(2020, 1, 8),
+				null,monthlyIncome,credentials,Administrator);
+		newOwner.getManager().addUserToApprove(newOwner);
+		addUsers(newOwner);
 		System.out.println("Successful OpenAccount");
 	}
-
-
-     //TODO
-	private LocalDate ReceivesDateFromUser() {
-		int year=scan.nextInt();
-		int month=scan.nextInt();
-		int day=scan.nextInt();
-		LocalDate ld = LocalDate.of(year,month,day);
-		return ld;
-	}
-
-
+	
+	
 	public void addUsers(AccountOwner owner) {
 		if(indexForApp<100) {
 			users[indexForApp]=owner;
@@ -197,7 +187,44 @@ public class AppManager {
 	}
 
 
+	private boolean isALLLetter(String username) {
+		for (int i = 0; i < username.length(); i++) 
+			if(!Character.isLetter(username.charAt(i))) 
+				return false;
+		return true;
+	}
 
+
+	private boolean isDigitAndLetter(String username) {
+		boolean digit=false;
+		boolean latter=false;
+		for (int i = 0; i < username.length(); i++) {
+			if(!Character.isDigit(username.charAt(i)) && !Character.isLetter(username.charAt(i)))
+				return false;
+			if(Character.isDigit(username.charAt(i)))
+			 digit=true;
+			
+			if(Character.isLetter(username.charAt(i)))
+				latter=true;
+		}
+		
+		return digit && latter;
+	}
+
+
+	private boolean isGoodLength(String password) {
+		if(password.length()<4||password.length()>8)
+				return false;
+		return true;
+	}
+
+//	private LocalDate makeData() {
+	//		int year=scan.nextInt();
+	//		int month=scan.nextInt();
+	//		int day=scan.nextInt();
+	//		LocalDate ld = LocalDate.of(year,month,day);
+	//		return ld;
+	//	}
 }
 
 
